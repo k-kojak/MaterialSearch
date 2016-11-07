@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">Circular Search Sample</string>
+    <string name="only_toolbar">Only toolbar</string>
+    <string name="toolbar_with_viewpager"><![CDATA[Toolbar & viewpager]]></string>
+    <string name="menu_search">Search</string>
+    <string name="foo_bar">Foo Bar</string>
+</resources>

@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merge
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#ffffff"
+    tools:parentTag="RelativeLayout">
+
+    <ImageView
+        android:id="@+id/search_back"
+        android:src="@drawable/ic_arrow_back"
+        android:tint="?attr/colorPrimary"
+        android:layout_height="48dp"
+        android:layout_width="48dp"
+        android:padding="12dp"
+        android:layout_centerVertical="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:background="?attr/selectableItemBackgroundBorderless" />
+
+    <EditText
+        android:id="@+id/search_input"
+        android:layout_height="match_parent"
+        android:layout_width="match_parent"
+        android:layout_toRightOf="@id/search_back"
+        android:layout_toEndOf="@id/search_back"
+        android:layout_toLeftOf="@+id/search_clear"
+        android:layout_toStartOf="@+id/search_clear"
+        android:textColor="@android:color/primary_text_light"
+        android:maxLines="1"
+        android:inputType="text"
+        android:background="@android:color/transparent"
+        android:hint="@android:string/search_go" />
+
+    <ImageView
+        android:id="@+id/search_clear"
+        android:src="@drawable/ic_close"
+        android:layout_height="48dp"
+        android:layout_width="48dp"
+        android:padding="12dp"
+        android:alpha=".6"
+        android:layout_centerVertical="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:background="?attr/selectableItemBackgroundBorderless"
+        android:visibility="invisible"
+        tools:visibility="visible" />
+
+</merge>

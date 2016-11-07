@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="CircularRevealView">
+        <attr name="revealSpeed" format="integer" />
+        <attr name="toolbarMode" format="boolean" />
+    </declare-styleable>
+</resources>

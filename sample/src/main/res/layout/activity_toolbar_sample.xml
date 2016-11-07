@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:reveal="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/activity_toolbar_sample"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="hu.kojak.android.materialtoolbarset.sample.ToolbarSample">
+
+    <android.support.design.widget.AppBarLayout
+        android:id="@+id/app_bar_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <android.support.v7.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="?attr/colorPrimary"
+            android:minHeight="?attr/actionBarSize" />
+
+    </android.support.design.widget.AppBarLayout>
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/list"
+        android:layout_below="@id/app_bar_layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scrollbars="vertical" />
+
+    <hu.kojak.android.materialtoolbarset.CircularRevealView
+        android:id="@+id/circular_view"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        reveal:revealSpeed="300"
+        android:background="@color/white">
+
+        <hu.kojak.android.circularreveal.SimpleSearch
+            android:id="@+id/simple_search"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+    </hu.kojak.android.materialtoolbarset.CircularRevealView>
+
+</RelativeLayout>
