@@ -35,7 +35,7 @@
         reveal:revealSpeed="300"
         android:background="@color/white">
 
-        <hu.kojak.android.circularreveal.SimpleSearch
+        <hu.kojak.android.materialtoolbarset.SimpleSearch
             android:id="@+id/simple_search"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
