@@ -1,6 +1,7 @@
 package hu.kojak.android.materialtoolbarset.sample;
 
 import android.os.Bundle;
+import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DividerItemDecoration;
@@ -33,6 +34,8 @@ public class ToolbarSample extends AppCompatActivity {
     RecyclerView mList;
     @BindView(R.id.toolbar)
     Toolbar mToolbar;
+    @BindView(R.id.app_bar_layout)
+    AppBarLayout mAppBarLayout;
     @BindView(R.id.circular_view)
     CircularRevealView mCircularReveal;
     @BindView(R.id.simple_search)
@@ -48,18 +51,18 @@ public class ToolbarSample extends AppCompatActivity {
         ButterKnife.bind(this);
 
         setSupportActionBar(mToolbar);
-        mCircularReveal.setToolbar(mToolbar);
+        mCircularReveal.init(mAppBarLayout);
         mCircularReveal.restoreState(savedInstanceState);
 
         mSimpleSearch.setSearchListener(new SimpleSearch.SearchListener() {
             @Override
             public void onBackPressed() {
-
+                mAdapter.setFilter("");
             }
 
             @Override
             public void onClearPressed() {
-
+                mAdapter.setFilter("");
             }
         });
 
