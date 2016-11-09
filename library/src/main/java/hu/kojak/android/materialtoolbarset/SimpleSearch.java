@@ -133,11 +133,9 @@ public class SimpleSearch extends RelativeLayout implements RevealListener {
 
     @Override
     public void onHide() {
-        if (mSearchInput.hasFocus()) {
-            mSearchInput.clearFocus();
-            InputMethodManager imm = (InputMethodManager) getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
-            imm.hideSoftInputFromWindow(mSearchInput.getWindowToken(), InputMethodManager.HIDE_IMPLICIT_ONLY);
-        }
+        mSearchInput.clearFocus();
+        InputMethodManager imm = (InputMethodManager) getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
+        imm.hideSoftInputFromWindow(mSearchInput.getWindowToken(), InputMethodManager.HIDE_IMPLICIT_ONLY);
         mSearchInput.setText("");
     }
 

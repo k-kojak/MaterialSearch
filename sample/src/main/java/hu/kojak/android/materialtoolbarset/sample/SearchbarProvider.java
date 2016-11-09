@@ -1,5 +1,7 @@
 package hu.kojak.android.materialtoolbarset.sample;
 
+import android.support.v7.widget.Toolbar;
+
 import hu.kojak.android.materialtoolbarset.CircularRevealView;
 
 /**
@@ -8,6 +10,8 @@ import hu.kojak.android.materialtoolbarset.CircularRevealView;
 
 public interface SearchbarProvider {
 
-    CircularRevealView provide();
+    CircularRevealView provideRevealView();
+
+    Toolbar provideToolbar();
 
 }

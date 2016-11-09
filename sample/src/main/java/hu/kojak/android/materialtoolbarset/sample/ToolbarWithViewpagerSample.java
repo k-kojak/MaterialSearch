@@ -9,7 +9,6 @@ import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
-import android.view.Window;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -35,7 +34,7 @@ public class ToolbarWithViewpagerSample extends AppCompatActivity implements Sea
 
         ButterKnife.bind(this);
         setSupportActionBar(mToolbar);
-        mCircularReveal.init(mAppBarLayout);
+        mCircularReveal.setTargetView(mAppBarLayout);
 
         final ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
         mPager = (ViewPager) findViewById(R.id.viewpager);
@@ -75,8 +74,22 @@ public class ToolbarWithViewpagerSample extends AppCompatActivity implements Sea
     }
 
     @Override
-    public CircularRevealView provide() {
+    public CircularRevealView provideRevealView() {
         return mCircularReveal;
+    }
+
+    @Override
+    public Toolbar provideToolbar() {
+        return mToolbar;
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (mCircularReveal.isViewing()) {
+            mCircularReveal.hide();
+        } else {
+            super.onBackPressed();
+        }
     }
 
     private static class ViewPagerAdapter extends FragmentStatePagerAdapter {

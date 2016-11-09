@@ -1,6 +1,5 @@
 package hu.kojak.android.materialtoolbarset.sample;
 
-import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -103,7 +102,7 @@ public class ListFragment extends Fragment {
         int id = item.getItemId();
         switch (id) {
             case R.id.action_search:
-                mProvider.provide().reveal(item);
+                mProvider.provideRevealView().reveal(mProvider.provideToolbar().findViewById(item.getItemId()));
                 break;
             case R.id.action_fake:
                 Snackbar.make(getView(), "Foo bar", Snackbar.LENGTH_SHORT).show();

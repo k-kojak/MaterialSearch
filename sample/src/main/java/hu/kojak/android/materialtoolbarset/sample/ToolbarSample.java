@@ -51,7 +51,7 @@ public class ToolbarSample extends AppCompatActivity {
         ButterKnife.bind(this);
 
         setSupportActionBar(mToolbar);
-        mCircularReveal.init(mAppBarLayout);
+//        mCircularReveal.setTargetView(mAppBarLayout);
         mCircularReveal.restoreState(savedInstanceState);
 
         mSimpleSearch.setSearchListener(new SimpleSearch.SearchListener() {
@@ -111,7 +111,7 @@ public class ToolbarSample extends AppCompatActivity {
         int id = item.getItemId();
         switch (id) {
             case R.id.action_search:
-                mCircularReveal.reveal(item);
+                mCircularReveal.reveal(mToolbar.findViewById(item.getItemId()));
                 break;
             case R.id.action_fake:
                 Snackbar.make(findViewById(android.R.id.content), "Foo bar", Snackbar.LENGTH_SHORT).show();
