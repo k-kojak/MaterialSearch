@@ -1,4 +1,4 @@
-package hu.kojak.android.materialtoolbarset;
+package hu.tamaskojedzinszky.android.materialsearch;
 
 import android.animation.Animator;
 import android.annotation.TargetApi;
@@ -15,6 +15,7 @@ import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.Transformation;
 import android.widget.RelativeLayout;
+
 
 /**
  * Created by Tamas Kojedzinszky on 06/11/2016.

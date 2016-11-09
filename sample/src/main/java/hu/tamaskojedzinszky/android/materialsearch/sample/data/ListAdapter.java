@@ -1,4 +1,4 @@
-package hu.kojak.android.materialtoolbarset.sample.data;
+package hu.tamaskojedzinszky.android.materialsearch.sample.data;
 
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -8,7 +8,7 @@ import android.widget.TextView;
 import java.util.ArrayList;
 import java.util.List;
 
-import hu.kojak.android.materialtoolbarset.sample.R;
+import hu.tamaskojedzinszky.android.materialsearch.sample.R;
 import rx.Observable;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.functions.Action1;

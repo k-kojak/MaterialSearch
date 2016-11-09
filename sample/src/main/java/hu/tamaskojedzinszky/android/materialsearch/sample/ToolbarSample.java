@@ -1,4 +1,4 @@
-package hu.kojak.android.materialtoolbarset.sample;
+package hu.tamaskojedzinszky.android.materialsearch.sample;
 
 import android.os.Bundle;
 import android.support.design.widget.AppBarLayout;
@@ -19,11 +19,11 @@ import java.util.concurrent.TimeUnit;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import hu.kojak.android.materialtoolbarset.CircularRevealView;
-import hu.kojak.android.materialtoolbarset.SimpleSearch;
-import hu.kojak.android.materialtoolbarset.sample.data.DataProvider;
-import hu.kojak.android.materialtoolbarset.sample.data.ListAdapter;
-import hu.kojak.android.materialtoolbarset.sample.data.Person;
+import hu.tamaskojedzinszky.android.materialsearch.CircularRevealView;
+import hu.tamaskojedzinszky.android.materialsearch.SimpleSearch;
+import hu.tamaskojedzinszky.android.materialsearch.sample.data.DataProvider;
+import hu.tamaskojedzinszky.android.materialsearch.sample.data.ListAdapter;
+import hu.tamaskojedzinszky.android.materialsearch.sample.data.Person;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.functions.Action1;
 import rx.functions.Func1;

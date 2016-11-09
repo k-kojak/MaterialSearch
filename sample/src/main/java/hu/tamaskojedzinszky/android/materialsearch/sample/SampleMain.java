@@ -1,4 +1,4 @@
-package hu.kojak.android.materialtoolbarset.sample;
+package hu.tamaskojedzinszky.android.materialsearch.sample;
 
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;

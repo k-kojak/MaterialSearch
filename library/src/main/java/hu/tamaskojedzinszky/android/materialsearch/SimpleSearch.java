@@ -1,4 +1,4 @@
-package hu.kojak.android.materialtoolbarset;
+package hu.tamaskojedzinszky.android.materialsearch;
 
 import android.content.Context;
 import android.support.annotation.Nullable;

@@ -1,4 +1,4 @@
-package hu.kojak.android.materialtoolbarset.sample.widget;
+package hu.tamaskojedzinszky.android.materialsearch.sample.widget;
 
 /*
  * Copyright 2014 Google Inc. All rights reserved.
@@ -31,7 +31,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import hu.kojak.android.materialtoolbarset.sample.R;
+import hu.tamaskojedzinszky.android.materialsearch.sample.R;
 
 /**
  * To be used with ViewPager to provide a tab indicator component which give constant feedback as to

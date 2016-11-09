@@ -1,4 +1,4 @@
-package hu.kojak.android.materialtoolbarset.sample;
+package hu.tamaskojedzinszky.android.materialsearch.sample;
 
 import android.support.design.widget.AppBarLayout;
 import android.support.v4.app.Fragment;
@@ -12,9 +12,9 @@ import android.support.v7.widget.Toolbar;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import hu.kojak.android.materialtoolbarset.CircularRevealView;
-import hu.kojak.android.materialtoolbarset.sample.data.ListAdapter;
-import hu.kojak.android.materialtoolbarset.sample.widget.SlidingTabLayout;
+import hu.tamaskojedzinszky.android.materialsearch.CircularRevealView;
+import hu.tamaskojedzinszky.android.materialsearch.sample.data.ListAdapter;
+import hu.tamaskojedzinszky.android.materialsearch.sample.widget.SlidingTabLayout;
 
 public class ToolbarWithViewpagerSample extends AppCompatActivity implements SearchbarProvider {
 

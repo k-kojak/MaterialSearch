@@ -1,4 +1,4 @@
-package hu.kojak.android.materialtoolbarset.sample.data;
+package hu.tamaskojedzinszky.android.materialsearch.sample.data;
 
 import android.content.Context;
 import android.content.res.Resources;
@@ -11,7 +11,7 @@ import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
 
-import hu.kojak.android.materialtoolbarset.sample.R;
+import hu.tamaskojedzinszky.android.materialsearch.sample.R;
 
 public class DataProvider {
 

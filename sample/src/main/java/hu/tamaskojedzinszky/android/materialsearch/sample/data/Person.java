@@ -1,4 +1,4 @@
-package hu.kojak.android.materialtoolbarset.sample.data;
+package hu.tamaskojedzinszky.android.materialsearch.sample.data;
 
 public class Person {
 

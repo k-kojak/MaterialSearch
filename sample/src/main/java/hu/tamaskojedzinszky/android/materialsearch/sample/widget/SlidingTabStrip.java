@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package hu.kojak.android.materialtoolbarset.sample.widget;
+package hu.tamaskojedzinszky.android.materialsearch.sample.widget;
 
 import android.content.Context;
 import android.graphics.Canvas;
@@ -25,7 +25,7 @@ import android.util.TypedValue;
 import android.view.View;
 import android.widget.LinearLayout;
 
-import hu.kojak.android.materialtoolbarset.sample.R;
+import hu.tamaskojedzinszky.android.materialsearch.sample.R;
 
 class SlidingTabStrip extends LinearLayout {
 

@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context="hu.kojak.android.materialtoolbarset.sample.ToolbarWithViewpagerSample">
+    tools:context="hu.tamaskojedzinszky.android.materialsearch.sample.ToolbarWithViewpagerSample">
 
     <android.support.design.widget.AppBarLayout
         android:id="@+id/app_bar_layout"
@@ -20,7 +20,7 @@
             android:background="?attr/colorPrimary"
             android:minHeight="?attr/actionBarSize" />
 
-        <hu.kojak.android.materialtoolbarset.sample.widget.SlidingTabLayout
+        <hu.tamaskojedzinszky.android.materialsearch.sample.widget.SlidingTabLayout
             android:id="@+id/tabs"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -39,18 +39,18 @@
         android:layout_height="match_parent"
         android:scrollbars="vertical" />
 
-    <hu.kojak.android.materialtoolbarset.CircularRevealView
+    <hu.tamaskojedzinszky.android.materialsearch.CircularRevealView
         android:id="@+id/circular_view"
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
         reveal:revealSpeed="300"
         android:background="@color/white">
 
-        <hu.kojak.android.materialtoolbarset.SimpleSearch
+        <hu.tamaskojedzinszky.android.materialsearch.SimpleSearch
             android:id="@+id/simple_search"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
 
-    </hu.kojak.android.materialtoolbarset.CircularRevealView>
+    </hu.tamaskojedzinszky.android.materialsearch.CircularRevealView>
 
 </LinearLayout>

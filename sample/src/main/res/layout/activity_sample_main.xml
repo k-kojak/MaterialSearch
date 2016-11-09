@@ -8,7 +8,7 @@
     android:padding="@dimen/activity_horizontal_margin"
     android:gravity="center_horizontal"
     android:orientation="vertical"
-    tools:context="hu.kojak.android.materialtoolbarset.sample.SampleMain">
+    tools:context=".SampleMain">
 
     <Button
         android:id="@+id/only_toolbar"
