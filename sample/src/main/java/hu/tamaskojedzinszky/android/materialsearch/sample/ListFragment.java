@@ -1,8 +1,9 @@
 package hu.tamaskojedzinszky.android.materialsearch.sample;
 
-import android.content.Context;
+import android.app.Activity;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.DividerItemDecoration;
@@ -70,10 +71,10 @@ public class ListFragment extends Fragment {
 
         ButterKnife.bind(this, view);
 
-        List<Person> personList = DataProvider.getData(getContext());
+        List<Person> personList = DataProvider.getData(getActivity());
         mAdapter = new ListAdapter(mType, personList);
         LinearLayoutManager layoutManager = new LinearLayoutManager(
-                getContext(),
+                getActivity(),
                 LinearLayoutManager.VERTICAL,
                 false);
         mList.setLayoutManager(layoutManager);
@@ -86,9 +87,9 @@ public class ListFragment extends Fragment {
     }
 
     @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-        mProvider = (SearchbarProvider) context;
+    public void onAttach(Activity activity) {
+        super.onAttach(activity);
+        mProvider = (SearchbarProvider) activity;
     }
 
     @Override
@@ -102,7 +103,8 @@ public class ListFragment extends Fragment {
         int id = item.getItemId();
         switch (id) {
             case R.id.action_search:
-                mProvider.provideRevealView().reveal(mProvider.provideToolbar().findViewById(item.getItemId()));
+                AppBarLayout appBar = mProvider.getAppBar();
+                mProvider.provideRevealView().revealOnToolbar(appBar, appBar.findViewById(item.getItemId()));
                 break;
             case R.id.action_fake:
                 Snackbar.make(getView(), "Foo bar", Snackbar.LENGTH_SHORT).show();

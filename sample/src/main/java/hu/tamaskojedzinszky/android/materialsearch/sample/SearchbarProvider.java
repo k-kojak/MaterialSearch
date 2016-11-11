@@ -1,5 +1,6 @@
 package hu.tamaskojedzinszky.android.materialsearch.sample;
 
+import android.support.design.widget.AppBarLayout;
 import android.support.v7.widget.Toolbar;
 
 import hu.tamaskojedzinszky.android.materialsearch.CircularRevealView;
@@ -12,6 +13,5 @@ public interface SearchbarProvider {
 
     CircularRevealView provideRevealView();
 
-    Toolbar provideToolbar();
-
+    AppBarLayout getAppBar();
 }

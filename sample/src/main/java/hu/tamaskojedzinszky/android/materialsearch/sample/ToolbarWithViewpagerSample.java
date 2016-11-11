@@ -25,8 +25,6 @@ public class ToolbarWithViewpagerSample extends AppCompatActivity implements Sea
     @BindView(R.id.circular_view)
     CircularRevealView mCircularReveal;
 
-    private ViewPager mPager;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -34,10 +32,9 @@ public class ToolbarWithViewpagerSample extends AppCompatActivity implements Sea
 
         ButterKnife.bind(this);
         setSupportActionBar(mToolbar);
-        mCircularReveal.setTargetView(mAppBarLayout);
 
         final ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
-        mPager = (ViewPager) findViewById(R.id.viewpager);
+        ViewPager mPager = (ViewPager) findViewById(R.id.viewpager);
         mPager.setAdapter(adapter);
         mPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
@@ -79,8 +76,8 @@ public class ToolbarWithViewpagerSample extends AppCompatActivity implements Sea
     }
 
     @Override
-    public Toolbar provideToolbar() {
-        return mToolbar;
+    public AppBarLayout getAppBar() {
+        return mAppBarLayout;
     }
 
     @Override

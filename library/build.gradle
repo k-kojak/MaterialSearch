@@ -1,12 +1,38 @@
 apply plugin: 'com.android.library'
 
+
+ext {
+    bintrayRepo = 'maven'
+    bintrayName = 'material-search'
+
+    publishedGroupId = 'hu.tamaskojedzinszky.android.materialsearch'
+    libraryName = 'MaterialSearch'
+    artifact = 'material-search'
+
+    libraryDescription = 'A simple library for material style (circular reveal) search.'
+
+    siteUrl = 'https://github.com/k-kojak/MaterialSearch'
+    gitUrl = 'https://github.com/k-kojak/MaterialSearch.git'
+
+    libraryVersion = '0.1.1'
+
+    developerId = 'k-kojak'
+    developerName = 'Tamas Kojedzinszky'
+    developerEmail = 'tamas.kojedzinszky@gmail.com'
+
+    licenseName = 'The MIT License (MIT)'
+    licenseUrl = 'https://opensource.org/licenses/MIT'
+    allLicenses = ["MIT"]
+}
+
+
 android {
-    compileSdkVersion 24
+    compileSdkVersion 25
     buildToolsVersion "25.0.0"
 
     defaultConfig {
         minSdkVersion 15
-        targetSdkVersion 24
+        targetSdkVersion 25
         versionCode 1
         versionName "1.0"
 
@@ -23,8 +49,12 @@ android {
 
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
-    compile 'com.android.support:appcompat-v7:24.2.1'
-    compile 'com.android.support:design:24.2.1'
+    compile 'com.android.support:appcompat-v7:25.0.0'
+    compile 'com.android.support:design:25.0.0'
 
     testCompile 'junit:junit:4.12'
 }
+
+apply from: 'https://raw.githubusercontent.com/nuuneoi/JCenter/master/installv1.gradle'
+apply from: 'https://raw.githubusercontent.com/nuuneoi/JCenter/master/bintrayv1.gradle'
+

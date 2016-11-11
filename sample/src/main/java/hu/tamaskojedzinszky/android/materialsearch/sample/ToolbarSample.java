@@ -20,6 +20,7 @@ import java.util.concurrent.TimeUnit;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import hu.tamaskojedzinszky.android.materialsearch.CircularRevealView;
+import hu.tamaskojedzinszky.android.materialsearch.CircularRevealView.Position;
 import hu.tamaskojedzinszky.android.materialsearch.SimpleSearch;
 import hu.tamaskojedzinszky.android.materialsearch.sample.data.DataProvider;
 import hu.tamaskojedzinszky.android.materialsearch.sample.data.ListAdapter;
@@ -38,6 +39,8 @@ public class ToolbarSample extends AppCompatActivity {
     AppBarLayout mAppBarLayout;
     @BindView(R.id.circular_view)
     CircularRevealView mCircularReveal;
+    @BindView(R.id.circular_view_fp)
+    CircularRevealView mCircularReveal2;
     @BindView(R.id.simple_search)
     SimpleSearch mSimpleSearch;
 
@@ -51,7 +54,6 @@ public class ToolbarSample extends AppCompatActivity {
         ButterKnife.bind(this);
 
         setSupportActionBar(mToolbar);
-//        mCircularReveal.setTargetView(mAppBarLayout);
         mCircularReveal.restoreState(savedInstanceState);
 
         mSimpleSearch.setSearchListener(new SimpleSearch.SearchListener() {
@@ -111,11 +113,16 @@ public class ToolbarSample extends AppCompatActivity {
         int id = item.getItemId();
         switch (id) {
             case R.id.action_search:
-                mCircularReveal.reveal(mToolbar.findViewById(item.getItemId()));
+                mCircularReveal.revealOnToolbar(mAppBarLayout, mToolbar.findViewById(item.getItemId()));
                 break;
             case R.id.action_fake:
-                Snackbar.make(findViewById(android.R.id.content), "Foo bar", Snackbar.LENGTH_SHORT).show();
-                break;
+                if (!mCircularReveal2.isViewing()) {
+                    mCircularReveal2.revealFloating(Position.BELOW, mToolbar, mToolbar.findViewById(item.getItemId()));
+                } else {
+                    mCircularReveal2.hide();
+                }
+//                Snackbar.make(findViewById(android.R.id.content), "Foo bar", Snackbar.LENGTH_SHORT).show();
+//                break;
         }
         return super.onOptionsItemSelected(item);
     }

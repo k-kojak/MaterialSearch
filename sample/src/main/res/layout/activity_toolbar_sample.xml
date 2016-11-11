@@ -7,10 +7,42 @@
     android:layout_height="match_parent"
     tools:context=".ToolbarSample">
 
+
+    <hu.tamaskojedzinszky.android.materialsearch.CircularRevealView
+        android:id="@+id/circular_view"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="@color/white"
+        reveal:revealSpeed="300">
+
+        <hu.tamaskojedzinszky.android.materialsearch.SimpleSearch
+            android:id="@+id/simple_search"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+    </hu.tamaskojedzinszky.android.materialsearch.CircularRevealView>
+
+    <hu.tamaskojedzinszky.android.materialsearch.CircularRevealView
+        android:id="@+id/circular_view_fp"
+        android:layout_width="match_parent"
+        android:layout_height="180dp"
+        android:background="@color/white"
+        android:elevation="4dp"
+        reveal:revealSpeed="300">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:text="Fingerprint options" />
+
+    </hu.tamaskojedzinszky.android.materialsearch.CircularRevealView>
+
     <android.support.design.widget.AppBarLayout
         android:id="@+id/app_bar_layout"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:background="@android:color/transparent">
 
         <android.support.v7.widget.Toolbar
             android:id="@+id/toolbar"
@@ -23,23 +55,9 @@
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/list"
-        android:layout_below="@id/app_bar_layout"
+        android:layout_marginTop="?attr/actionBarSize"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:scrollbars="vertical" />
-
-    <hu.tamaskojedzinszky.android.materialsearch.CircularRevealView
-        android:id="@+id/circular_view"
-        android:layout_width="match_parent"
-        android:layout_height="?attr/actionBarSize"
-        reveal:revealSpeed="300"
-        android:background="@color/white">
-
-        <hu.tamaskojedzinszky.android.materialsearch.SimpleSearch
-            android:id="@+id/simple_search"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
-
-    </hu.tamaskojedzinszky.android.materialsearch.CircularRevealView>
 
 </RelativeLayout>
