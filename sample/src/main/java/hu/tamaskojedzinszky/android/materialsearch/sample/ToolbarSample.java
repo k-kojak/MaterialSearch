@@ -2,7 +2,6 @@ package hu.tamaskojedzinszky.android.materialsearch.sample;
 
 import android.os.Bundle;
 import android.support.design.widget.AppBarLayout;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
@@ -121,8 +120,6 @@ public class ToolbarSample extends AppCompatActivity {
                 } else {
                     mCircularReveal2.hide();
                 }
-//                Snackbar.make(findViewById(android.R.id.content), "Foo bar", Snackbar.LENGTH_SHORT).show();
-//                break;
         }
         return super.onOptionsItemSelected(item);
     }
@@ -132,6 +129,8 @@ public class ToolbarSample extends AppCompatActivity {
     public void onBackPressed() {
         if (mCircularReveal.isViewing()) {
             mCircularReveal.hide();
+        } else if (mCircularReveal2.isViewing()) {
+            mCircularReveal2.hide();
         } else {
             super.onBackPressed();
         }

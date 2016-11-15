@@ -71,7 +71,7 @@ public class ToolbarWithViewpagerSample extends AppCompatActivity implements Sea
     }
 
     @Override
-    public CircularRevealView provideRevealView() {
+    public CircularRevealView getRevealView() {
         return mCircularReveal;
     }
 

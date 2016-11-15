@@ -9,12 +9,14 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.View;
 import android.view.ViewAnimationUtils;
 import android.view.ViewGroup;
+import android.view.ViewTreeObserver;
+import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
 import android.view.animation.Transformation;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 
 
@@ -25,6 +27,7 @@ import android.widget.RelativeLayout;
 public class CircularRevealView extends RelativeLayout {
 
     private static final String EXCEPTION_TARGETVIEW_IS_NULL = "TargetView is null.";
+    private static final String EXCEPTION_ALREADY_HAS_DIFFERENT_BEHAVIOR = "This class already has a different behavior. Once you selected one, you cannot use a different one.";
 
     private static final String STATE_IS_VIEWING = CircularRevealView.class.getName() + ".state_is_viewing";
     private static final float TOOLBAR_ANIM_MULTIPLIER = 0.75f;
@@ -33,6 +36,11 @@ public class CircularRevealView extends RelativeLayout {
     private Behavior mBehavior;
     private Position mPosition;
     private int mHeight;
+    private ViewGroup mCancelLayer;
+    private ViewGroup mAndroidContent;
+    private Animator mCircularAnimator;
+    private Animation mAlphaAnimation;
+    private int mAnimationRadius;
 
     private boolean mIsInitialized = false;
     private final int[] mAnimationCenter = new int[2];
@@ -55,40 +63,40 @@ public class CircularRevealView extends RelativeLayout {
 
     public CircularRevealView(Context context) {
         super(context);
-        initAttributes(context, null);
+        init(context, null);
     }
 
     public CircularRevealView(Context context, AttributeSet attrs) {
         super(context, attrs);
-        initAttributes(context, attrs);
+        init(context, attrs);
     }
 
     public CircularRevealView(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
-        initAttributes(context, attrs);
+        init(context, attrs);
     }
 
-    private void initAttributes(Context context, @Nullable AttributeSet attrs) {
+    private void init(Context context, @Nullable AttributeSet attrs) {
         if (attrs == null) return;
 
-        int[] attrsArray = new int[]{
-                R.attr.revealSpeed, // 0
-                android.R.attr.layout_height, // 1
-
-        };
-
-        TypedArray a = context.obtainStyledAttributes(attrs, attrsArray);
-
-        mRevealSpeed = a.getInteger(0,
+        TypedArray a = context.obtainStyledAttributes(attrs, R.styleable.CircularRevealView);
+        mRevealSpeed = a.getInteger(R.styleable.CircularRevealView_revealSpeed,
                 context.getResources().getInteger(android.R.integer.config_mediumAnimTime));
-
-        mHeight = a.getDimensionPixelSize(1, 0);
-
         a.recycle();
 
-        setVisibility(View.GONE);
-
+        // getting height
+        setVisibility(View.VISIBLE);
+        getViewTreeObserver().addOnGlobalLayoutListener(
+                new ViewTreeObserver.OnGlobalLayoutListener() {
+                    @Override
+                    public void onGlobalLayout() {
+                        mHeight = getHeight();
+                        getViewTreeObserver().removeOnGlobalLayoutListener(this);
+                        setVisibility(View.GONE);
+                    }
+                });
     }
+
 
     public void setListener(RevealListener listener) {
         mListener = listener;
@@ -110,26 +118,50 @@ public class CircularRevealView extends RelativeLayout {
     }
 
     public void revealOnToolbar(@NonNull View targetView, @Nullable View sourceView) {
+        Behavior newBehavior = Behavior.TOOLBAR;
+        checkBehavior(newBehavior);
+
         mTargetView = targetView;
-        mBehavior = Behavior.TOOLBAR;
+        mBehavior = newBehavior;
         mPosition = Position.ON;
         reveal(sourceView);
     }
 
     public void revealFloating(@NonNull Position position, @NonNull View targetView, @Nullable View sourceView) {
+        Behavior newBehavior = Behavior.FLOATING;
+        checkBehavior(newBehavior);
+
         mTargetView = targetView;
-        mBehavior = Behavior.FLOATING;
+        mBehavior = newBehavior;
         mPosition = position;
         reveal(sourceView);
     }
 
-    public void revealInPlace(@Nullable View sourceView) {
-        mBehavior = Behavior.INPLACE;
-        mPosition = null;
-        reveal(sourceView);
+    private void checkBehavior(Behavior newBehavior) {
+        if (mBehavior != null && !mBehavior.equals(newBehavior)) {
+            throw new IllegalArgumentException(EXCEPTION_ALREADY_HAS_DIFFERENT_BEHAVIOR);
+        }
     }
 
-    private void reveal(View sourceView) {
+    /**
+     * Not supporting it, yet.
+     */
+//    public void revealInPlace(@Nullable View sourceView) {
+//        Behavior newBehavior = Behavior.INPLACE;
+//        checkBehavior(newBehavior);
+//
+//        mBehavior = newBehavior;
+//        mPosition = null;
+//        reveal(sourceView);
+//    }
+    public boolean isAnimationRunning() {
+        return (mCircularAnimator != null && mCircularAnimator.isRunning())
+                || (mAlphaAnimation != null && mAlphaAnimation.hasStarted() && !mAlphaAnimation.hasEnded());
+    }
+
+    private void reveal(final View sourceView) {
+        if (isAnimationRunning()) return;
+
         if (!mIsInitialized) {
             if (mBehavior == Behavior.TOOLBAR || mBehavior == Behavior.FLOATING) {
                 moveViewToRoot();
@@ -139,35 +171,39 @@ public class CircularRevealView extends RelativeLayout {
 
         if (mBehavior == Behavior.FLOATING) {
             setMarginTopBasedOnTargetView();
+            mCancelLayer.setVisibility(View.VISIBLE);
         }
-
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            postLollipopFloatingReveal(sourceView);
+            postLollipopReveal(sourceView);
         } else {
-            preLollipopFloatingReveal();
+            preLollipopReveal();
         }
         hideTargetIfNeeded();
     }
 
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)
-    private void postLollipopFloatingReveal(View sourceOfTrigger) {
+    private void postLollipopReveal(View sourceOfTrigger) {
         sourceOfTrigger.getLocationOnScreen(mAnimationCenter);
         int toolbarHeight = getStatusBarHeight();
+        int halfSourceHeight = sourceOfTrigger.getHeight() / 2;
         mAnimationCenter[0] = mAnimationCenter[0] + sourceOfTrigger.getWidth() / 2;
-        mAnimationCenter[1] = mAnimationCenter[1] + sourceOfTrigger.getHeight() / 2 - toolbarHeight;
+        mAnimationCenter[1] = mAnimationCenter[1] + halfSourceHeight - toolbarHeight - ((MarginLayoutParams) getLayoutParams()).topMargin;
+        mAnimationRadius = (int) Math.hypot(mAnimationCenter[0], mHeight + halfSourceHeight);
 
-        Animator anim = ViewAnimationUtils.createCircularReveal(
+        mCircularAnimator = ViewAnimationUtils.createCircularReveal(
                 this,
                 mAnimationCenter[0],
                 mAnimationCenter[1],
                 0,
-                mAnimationCenter[0]);
+                mAnimationRadius);
 
-        anim.addListener(new SimpleAnimatorListener() {
+        mCircularAnimator.addListener(new SimpleAnimatorListener() {
             @Override
             public void onAnimationStart(Animator animation) {
+                if (mBehavior == Behavior.FLOATING) {
+                    mCancelLayer.setVisibility(View.VISIBLE);
+                }
                 setVisibility(View.VISIBLE);
-                Log.d("asd", "Settting visiblity to VISIBLE");
             }
 
             @Override
@@ -177,15 +213,18 @@ public class CircularRevealView extends RelativeLayout {
                 }
             }
         });
-        anim.setDuration(mRevealSpeed);
-        anim.start();
+        mCircularAnimator.setDuration(mRevealSpeed);
+        mCircularAnimator.start();
 
     }
 
-    private void preLollipopFloatingReveal() {
-        setTopMargin(this, -mHeight);
+    private void preLollipopReveal() {
         setVisibility(View.VISIBLE);
-        animateTopMargin(this, 0, mRevealSpeed, new SimpleAnimationListener() {
+
+        mAlphaAnimation = new AlphaAnimation(0, 1);
+        mAlphaAnimation.setDuration(mRevealSpeed);
+        mAlphaAnimation.setFillAfter(false);
+        mAlphaAnimation.setAnimationListener(new SimpleAnimationListener() {
             @Override
             public void onAnimationEnd(Animation animation) {
                 if (mListener != null) {
@@ -193,28 +232,12 @@ public class CircularRevealView extends RelativeLayout {
                 }
             }
         });
-    }
-
-    /**
-     * This should be called only when in Toolbar mode, when we automatically hide the view.
-     */
-    private void hideTargetIfNeeded() {
-        if (mBehavior != Behavior.TOOLBAR) return;
-        if (mTargetView == null) {
-            throw new RuntimeException(EXCEPTION_TARGETVIEW_IS_NULL);
-        }
-
-        int targetHeight = mTargetView.getHeight();
-        if (mHeight < targetHeight) {
-            animateTopMargin(
-                    mTargetView,
-                    -(targetHeight - mHeight),
-                    (int) (mRevealSpeed * TOOLBAR_ANIM_MULTIPLIER),
-                    null);
-        }
+        startAnimation(mAlphaAnimation);
     }
 
     public void hide() {
+        if (isAnimationRunning()) return;
+
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             postLollipopHide();
         } else {
@@ -225,41 +248,58 @@ public class CircularRevealView extends RelativeLayout {
 
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)
     private void postLollipopHide() {
-        Animator anim = ViewAnimationUtils.createCircularReveal(
+        mCircularAnimator = ViewAnimationUtils.createCircularReveal(
                 this,
                 mAnimationCenter[0],
                 mAnimationCenter[1],
-                mAnimationCenter[0],
+                mAnimationRadius,
                 0);
 
-        anim.addListener(new SimpleAnimatorListener() {
+        mCircularAnimator.addListener(new SimpleAnimatorListener() {
             @Override
             public void onAnimationEnd(Animator animator) {
+                if (mBehavior == Behavior.FLOATING) {
+                    mCancelLayer.setVisibility(View.GONE);
+                }
                 setVisibility(View.GONE);
+
                 if (mListener != null) {
                     mListener.onHide();
                 }
             }
         });
-        anim.setDuration(mRevealSpeed);
-        anim.start();
+        mCircularAnimator.setDuration(mRevealSpeed);
+        mCircularAnimator.start();
 
     }
 
     private void preLollipopHide() {
-        animateTopMargin(this, -mHeight, mRevealSpeed, new SimpleAnimationListener() {
+        mAlphaAnimation = new AlphaAnimation(1, 0);
+        mAlphaAnimation.setDuration(mRevealSpeed);
+        mAlphaAnimation.setFillAfter(false);
+        mAlphaAnimation.setAnimationListener(new SimpleAnimationListener() {
             @Override
             public void onAnimationEnd(Animation animation) {
+                if (mBehavior == Behavior.FLOATING) {
+                    mCancelLayer.setVisibility(View.GONE);
+                }
                 setVisibility(View.GONE);
+
                 if (mListener != null) {
                     mListener.onHide();
                 }
+
             }
         });
+        startAnimation(mAlphaAnimation);
     }
 
+    /**
+     * This should be called only when in Toolbar mode, when we automatically reveal target.
+     */
     private void revealTargetIfNeeded() {
         if (mBehavior != Behavior.TOOLBAR) return;
+
         if (mTargetView == null) {
             throw new RuntimeException(EXCEPTION_TARGETVIEW_IS_NULL);
         }
@@ -269,6 +309,26 @@ public class CircularRevealView extends RelativeLayout {
             animateTopMargin(
                     mTargetView,
                     0,
+                    (int) (mRevealSpeed * TOOLBAR_ANIM_MULTIPLIER),
+                    null);
+        }
+    }
+
+    /**
+     * This should be called only when in Toolbar mode, when we automatically hide the view.
+     */
+    private void hideTargetIfNeeded() {
+        if (mBehavior != Behavior.TOOLBAR) return;
+
+        if (mTargetView == null) {
+            throw new RuntimeException(EXCEPTION_TARGETVIEW_IS_NULL);
+        }
+
+        int targetHeight = mTargetView.getHeight();
+        if (mHeight < targetHeight) {
+            animateTopMargin(
+                    mTargetView,
+                    -(targetHeight - mHeight),
                     (int) (mRevealSpeed * TOOLBAR_ANIM_MULTIPLIER),
                     null);
         }
@@ -297,23 +357,48 @@ public class CircularRevealView extends RelativeLayout {
     }
 
     private void moveViewToRoot() {
-        Log.d("asd", "moveViewToRoot()");
-        // searching android.R.id.content
-        ViewGroup androidContent = (ViewGroup) getParent();
-        while (androidContent != null && androidContent.getId() != android.R.id.content) {
-            androidContent = (ViewGroup) androidContent.getParent();
-        }
-        if (androidContent == null) {
-            throw new RuntimeException("Cannot find android.R.id.content in parents, that's a problem!");
-        }
+        searchAndroidContentView();
 
-        // moving view to android.R.id.content
+        // finding direct parent
         final ViewGroup directParent = (ViewGroup) getParent();
-        final ViewGroup finalAndroidContent = androidContent;
-        directParent.removeView(CircularRevealView.this);
-        finalAndroidContent.addView(CircularRevealView.this);
-        Log.d("asd", "ACTUALLY MOVING VIEW HERE");
+        directParent.removeView(this);
 
+        if (mBehavior == Behavior.FLOATING) {
+            initCancelLayer();
+            mCancelLayer.addView(this);
+            mAndroidContent.addView(mCancelLayer);
+        } else {
+            mAndroidContent.addView(this);
+        }
+    }
+
+    /**
+     * Searching android.R.id.content view.
+     */
+    private void searchAndroidContentView() {
+        if (mAndroidContent == null) {
+            mAndroidContent = (ViewGroup) getParent();
+            while (mAndroidContent != null && mAndroidContent.getId() != android.R.id.content) {
+                mAndroidContent = (ViewGroup) mAndroidContent.getParent();
+            }
+            if (mAndroidContent == null) {
+                throw new RuntimeException("Cannot find android.R.id.content in parents, that's a problem!");
+            }
+        }
+    }
+
+    private void initCancelLayer() {
+        if (mCancelLayer == null) {
+            mCancelLayer = new LinearLayout(getContext());
+            mCancelLayer.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
+            mCancelLayer.setOnClickListener(new OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    hide();
+                }
+            });
+            mCancelLayer.setVisibility(View.GONE);
+        }
     }
 
     private int getStatusBarHeight() {

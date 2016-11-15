@@ -1,6 +1,6 @@
 package hu.tamaskojedzinszky.android.materialsearch.sample;
 
-import android.app.Activity;
+import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.AppBarLayout;
@@ -87,9 +87,9 @@ public class ListFragment extends Fragment {
     }
 
     @Override
-    public void onAttach(Activity activity) {
-        super.onAttach(activity);
-        mProvider = (SearchbarProvider) activity;
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        mProvider = (SearchbarProvider) context;
     }
 
     @Override
@@ -104,7 +104,7 @@ public class ListFragment extends Fragment {
         switch (id) {
             case R.id.action_search:
                 AppBarLayout appBar = mProvider.getAppBar();
-                mProvider.provideRevealView().revealOnToolbar(appBar, appBar.findViewById(item.getItemId()));
+                mProvider.getRevealView().revealOnToolbar(appBar, appBar.findViewById(item.getItemId()));
                 break;
             case R.id.action_fake:
                 Snackbar.make(getView(), "Foo bar", Snackbar.LENGTH_SHORT).show();

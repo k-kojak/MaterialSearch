@@ -11,14 +11,15 @@
     <hu.tamaskojedzinszky.android.materialsearch.CircularRevealView
         android:id="@+id/circular_view"
         android:layout_width="match_parent"
-        android:layout_height="?attr/actionBarSize"
+        android:layout_height="wrap_content"
         android:background="@color/white"
+        android:clickable="true"
         reveal:revealSpeed="300">
 
         <hu.tamaskojedzinszky.android.materialsearch.SimpleSearch
             android:id="@+id/simple_search"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            android:layout_height="?attr/actionBarSize" />
 
     </hu.tamaskojedzinszky.android.materialsearch.CircularRevealView>
 
@@ -27,8 +28,9 @@
         android:layout_width="match_parent"
         android:layout_height="180dp"
         android:background="@color/white"
+        android:clickable="true"
         android:elevation="4dp"
-        reveal:revealSpeed="300">
+        reveal:revealSpeed="450">
 
         <TextView
             android:layout_width="wrap_content"

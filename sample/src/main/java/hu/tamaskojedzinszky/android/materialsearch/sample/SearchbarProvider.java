@@ -11,7 +11,7 @@ import hu.tamaskojedzinszky.android.materialsearch.CircularRevealView;
 
 public interface SearchbarProvider {
 
-    CircularRevealView provideRevealView();
+    CircularRevealView getRevealView();
 
     AppBarLayout getAppBar();
 }
