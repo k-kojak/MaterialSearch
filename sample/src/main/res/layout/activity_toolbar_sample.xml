@@ -26,7 +26,8 @@
     <hu.tamaskojedzinszky.android.materialsearch.CircularRevealView
         android:id="@+id/circular_view_fp"
         android:layout_width="match_parent"
-        android:layout_height="180dp"
+        android:layout_height="wrap_content"
+        android:padding="48dp"
         android:background="@color/white"
         android:clickable="true"
         android:elevation="4dp"

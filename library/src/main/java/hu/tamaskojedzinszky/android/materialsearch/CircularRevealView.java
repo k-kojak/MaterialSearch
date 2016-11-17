@@ -36,6 +36,8 @@ public class CircularRevealView extends RelativeLayout {
     private Behavior mBehavior;
     private Position mPosition;
     private int mHeight;
+    private int mOriginalTopMargin;
+
     private ViewGroup mCancelLayer;
     private ViewGroup mAndroidContent;
     private Animator mCircularAnimator;
@@ -91,6 +93,7 @@ public class CircularRevealView extends RelativeLayout {
                     @Override
                     public void onGlobalLayout() {
                         mHeight = getHeight();
+                        mOriginalTopMargin = ((MarginLayoutParams) getLayoutParams()).topMargin;
                         getViewTreeObserver().removeOnGlobalLayoutListener(this);
                         setVisibility(View.GONE);
                     }
@@ -343,9 +346,9 @@ public class CircularRevealView extends RelativeLayout {
             throw new RuntimeException(EXCEPTION_TARGETVIEW_IS_NULL);
         }
 
-        int[] location = new int[2];
-        mTargetView.getLocationInWindow(location);
-        int topMargin = location[1];
+        int[] targetViewLocation = new int[2];
+        mTargetView.getLocationInWindow(targetViewLocation);
+        int topMargin = targetViewLocation[1];
 
         if (mPosition == Position.BELOW) {
             topMargin += mTargetView.getHeight();
@@ -353,16 +356,24 @@ public class CircularRevealView extends RelativeLayout {
 
         topMargin -= getStatusBarHeight();
 
-        setTopMargin(this, topMargin);
+        positionOnScreenVertically(topMargin);
+    }
+
+    private void positionOnScreenVertically(int topMargin) {
+        MarginLayoutParams params = (MarginLayoutParams) getLayoutParams();
+        params.topMargin = topMargin + mOriginalTopMargin;
+        setLayoutParams(params);
     }
 
     private void moveViewToRoot() {
         searchAndroidContentView();
 
+        // saving margin params
+        MarginLayoutParams marginParams = (MarginLayoutParams) getLayoutParams();
+
         // finding direct parent
         final ViewGroup directParent = (ViewGroup) getParent();
         directParent.removeView(this);
-
         if (mBehavior == Behavior.FLOATING) {
             initCancelLayer();
             mCancelLayer.addView(this);
@@ -370,6 +381,17 @@ public class CircularRevealView extends RelativeLayout {
         } else {
             mAndroidContent.addView(this);
         }
+
+        // applying margin params
+        reapplyLostLayoutParams(marginParams);
+    }
+
+    private void reapplyLostLayoutParams(MarginLayoutParams savedMarginParams) {
+        MarginLayoutParams params = ((MarginLayoutParams)getLayoutParams());
+        params.leftMargin = savedMarginParams.leftMargin;
+        params.topMargin= savedMarginParams.topMargin;
+        params.rightMargin = savedMarginParams.rightMargin;
+        params.bottomMargin = savedMarginParams.bottomMargin;
     }
 
     /**
@@ -427,12 +449,6 @@ public class CircularRevealView extends RelativeLayout {
             a.setAnimationListener(animListener);
         }
         view.startAnimation(a);
-    }
-
-    private static void setTopMargin(final View view, int topMargin) {
-        final MarginLayoutParams params = (MarginLayoutParams) view.getLayoutParams();
-        params.topMargin = topMargin;
-        view.setLayoutParams(params);
     }
 
     private static class SimpleAnimationListener implements Animation.AnimationListener {
