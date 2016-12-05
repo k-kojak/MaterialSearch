@@ -1,1 +1,1 @@
-include ':sample', ':library'
+include ':sample', ':material-search'
