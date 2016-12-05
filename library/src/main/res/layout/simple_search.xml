@@ -10,7 +10,7 @@
 
     <ImageView
         android:id="@+id/search_back"
-        android:src="@drawable/ic_arrow_back"
+        android:src="@drawable/material_search_ic_arrow_back"
         android:tint="?attr/colorPrimary"
         android:layout_height="48dp"
         android:layout_width="48dp"
@@ -36,7 +36,7 @@
 
     <ImageView
         android:id="@+id/search_clear"
-        android:src="@drawable/ic_close"
+        android:src="@drawable/material_search_ic_close"
         android:layout_height="48dp"
         android:layout_width="48dp"
         android:padding="12dp"
