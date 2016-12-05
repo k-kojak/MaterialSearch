@@ -14,7 +14,7 @@ ext {
     siteUrl = 'https://github.com/k-kojak/MaterialSearch'
     gitUrl = 'https://github.com/k-kojak/MaterialSearch.git'
 
-    libraryVersion = '0.1.5'
+    libraryVersion = '0.1.6'
 
     developerId = 'k-kojak'
     developerName = 'Tamas Kojedzinszky'
