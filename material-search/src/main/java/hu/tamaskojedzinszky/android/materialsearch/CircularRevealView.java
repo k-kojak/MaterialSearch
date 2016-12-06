@@ -240,6 +240,7 @@ public class CircularRevealView extends RelativeLayout {
 
     public void hide() {
         if (isAnimationRunning()) return;
+        if (!isViewing()) return;
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             postLollipopHide();
