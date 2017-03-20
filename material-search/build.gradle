@@ -14,7 +14,7 @@ ext {
     siteUrl = 'https://github.com/k-kojak/MaterialSearch'
     gitUrl = 'https://github.com/k-kojak/MaterialSearch.git'
 
-    libraryVersion = '0.1.7'
+    libraryVersion = '0.1.8'
 
     developerId = 'k-kojak'
     developerName = 'Tamas Kojedzinszky'
@@ -49,8 +49,8 @@ android {
 
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
-    compile 'com.android.support:appcompat-v7:25.0.1'
-    compile 'com.android.support:design:25.0.1'
+    compile 'com.android.support:appcompat-v7:25.2.0'
+    compile 'com.android.support:design:25.2.0'
 
     testCompile 'junit:junit:4.12'
 }

@@ -129,6 +129,9 @@ public class SimpleSearch extends RelativeLayout implements RevealListener {
         mSearchInput.requestFocus();
         InputMethodManager imm = (InputMethodManager) getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
         imm.showSoftInput(mSearchInput, InputMethodManager.SHOW_IMPLICIT);
+        if (mSearchListener != null) {
+            mSearchListener.onReveal();
+        }
     }
 
     @Override
@@ -137,13 +140,20 @@ public class SimpleSearch extends RelativeLayout implements RevealListener {
         InputMethodManager imm = (InputMethodManager) getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
         imm.hideSoftInputFromWindow(mSearchInput.getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
         mSearchInput.setText("");
+        if (mSearchListener != null) {
+            mSearchListener.onHide();
+        }
     }
 
     public interface SearchListener {
 
-        public void onBackPressed();
+        void onBackPressed();
 
-        public void onClearPressed();
+        void onClearPressed();
+
+        void onHide();
+
+        void onReveal();
 
     }
 
